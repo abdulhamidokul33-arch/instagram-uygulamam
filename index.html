@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Instegram">
+<title>Instegram</title>
+<style>
+:root{--bg:#fff;--card:#fff;--tx:#1a1a1a;--mu:#8e8e8e;--bd:#dbdbdb;--ac:#0095f6;--rd:#ed4956;--in:#efefef}
+[data-theme=dark]{--bg:#000;--card:#121212;--tx:#f5f5f5;--mu:#a8a8a8;--bd:#2b2b2b;--ac:#4cb5f9;--in:#262626}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,textarea{font:inherit;color:var(--tx);background:var(--in);border:1px solid var(--bd);border-radius:8px;padding:11px 12px;width:100%;outline:0}
+input:focus,textarea:focus{border-color:var(--mu)}
+.logo{font-family:"Brush Script MT","Segoe Script",cursive;font-size:32px;letter-spacing:.5px}
+.grad{background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7);-webkit-background-clip:text;background-clip:text;color:transparent}
+#auth{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px}
+.box{width:100%;max-width:350px;border:1px solid var(--bd);background:var(--card);padding:28px 26px;display:flex;flex-direction:column;gap:9px;border-radius:4px}
+.box .logo{font-size:50px;text-align:center;margin-bottom:8px}
+.btn{background:var(--ac);color:#fff;border-radius:8px;padding:10px;font-weight:600;width:100%}
+.btn.sec{background:var(--in);color:var(--tx)}
+.err{color:var(--rd);font-size:13px;text-align:center;min-height:18px}
+.sub{color:var(--mu);text-align:center;font-weight:600;font-size:14px}
+.lnk{color:var(--ac);font-weight:600}
+#app{max-width:480px;margin:0 auto;min-height:100%;border-inline:1px solid var(--bd);padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top))}
+header .ic{display:flex;gap:14px;align-items:center}
+.ib{font-size:22px;line-height:1}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:5}
+nav button{font-size:24px;opacity:.55}nav button.on{opacity:1}
+.av{width:32px;height:32px;border-radius:50%;object-fit:cover;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex:none}
+.stories{display:flex;gap:14px;overflow-x:auto;padding:12px 14px;border-bottom:1px solid var(--bd);scrollbar-width:none}
+.st{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;flex:none;width:68px}
+.st .ring{padding:3px;border-radius:50%;background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)}
+.st .ring .av{border:3px solid var(--bg)}
+.st span{max-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.post{border-bottom:1px solid var(--bd);padding-bottom:8px}
+.ph{display:flex;align-items:center;gap:10px;padding:10px 14px;font-weight:600}
+.ph .x{margin-left:auto;color:var(--mu)}
+.med{width:100%;aspect-ratio:1;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:110px;user-select:none;position:relative;background:var(--in)}
+.heart{position:absolute;font-size:90px;opacity:0;pointer-events:none;color:#fff;text-shadow:0 2px 20px #0006}
+.heart.pop{animation:pop .7s}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}25%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:scale(1)}}
+.act{display:flex;gap:16px;padding:10px 14px 4px;font-size:26px;align-items:center}
+.act .r{margin-left:auto}.liked{color:var(--rd)}
+.pad{padding:2px 14px;font-size:14px}.mu{color:var(--mu)}
+.ci{display:flex;gap:8px;padding:6px 14px 0}.ci input{border:0;background:none;padding:6px 0}
+.ci button{color:var(--ac);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.grid .g{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:44px;overflow:hidden;background:var(--in);cursor:pointer}
+.grid img{width:100%;height:100%;object-fit:cover}
+.pr{padding:16px 14px}.pr .top{display:flex;gap:22px;align-items:center}
+.pr .av{width:80px;height:80px;font-size:32px}
+.stat{display:flex;gap:18px;text-align:center;flex:1;justify-content:space-around}.stat b{display:block;font-size:17px}.stat span{font-size:13px}
+.tabs{display:flex;border-top:1px solid var(--bd);margin-top:14px}.tabs div{flex:1;text-align:center;padding:10px;font-size:20px}
+.srch{padding:10px 14px}
+.usr{display:flex;align-items:center;gap:12px;padding:8px 14px;cursor:pointer}
+.usr .f{margin-left:auto;font-size:13px;padding:6px 14px;width:auto}
+.ov{position:fixed;inset:0;background:#000b;z-index:20;display:flex;align-items:center;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:480px;max-height:100%;overflow:auto;border-radius:12px}
+.sheet.f{height:100%;border-radius:0}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--bd);font-weight:700;position:sticky;top:0;background:var(--bg);z-index:2}
+.form{padding:14px;display:flex;flex-direction:column;gap:10px}
+.prev{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:var(--in)}
+.sv{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:120px;gap:10px}
+.sv .bar{position:absolute;top:calc(10px + env(safe-area-inset-top));left:10px;right:10px;height:3px;background:#fff5;border-radius:3px;overflow:hidden}
+.sv .bar i{display:block;height:100%;background:#fff;animation:fill 4s linear forwards}
+@keyframes fill{from{width:0}to{width:100%}}
+.sv .nm{position:absolute;top:calc(26px + env(safe-area-inset-top));left:14px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
+.sv p{font-size:20px;padding:0 24px;text-align:center}
+.empty{text-align:center;color:var(--mu);padding:50px 24px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#262626;color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;z-index:50;opacity:0;transition:.25s;pointer-events:none}
+#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hash=s=>{let h=5381;for(const c of s)h=(h*33^c.charCodeAt(0))>>>0;return h.toString(36)};
+const G=['linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)','linear-gradient(135deg,#43e97b,#38f9d7)','linear-gradient(135deg,#fa709a,#fee140)','linear-gradient(135deg,#4facfe,#00f2fe)','linear-gradient(135deg,#a18cd1,#fbc2eb)','linear-gradient(135deg,#ff9a9e,#fad0c4)'];
+const stars=n=>Array.from({length:n},(_,i)=>`<circle cx='${(i*97)%400}' cy='${(i*53)%230}' r='${i%3?1:1.8}' fill='#fff' opacity='.85'/>`).join('');
+const lg=(a,b,c)=>`<defs><linearGradient id='a' x2='0' y2='1'><stop offset='0' stop-color='${a}'/>${c?`<stop offset='.55' stop-color='${c}'/>`:''}<stop offset='1' stop-color='${b}'/></linearGradient></defs><rect width='400' height='400' fill='url(#a)'/>`;
+const SCN={
+ dag:()=>lg('#4facfe','#ffeaa7')+`<circle cx='300' cy='90' r='34' fill='#fff7c2'/><path d='M0 400V250L90 140L170 250L250 170L340 270L400 220V400Z' fill='#5b6c8f'/><path d='M60 170L90 140L120 175L100 168L88 180L75 166Z' fill='#fff'/><path d='M0 400V310L120 240L240 320L330 270L400 310V400Z' fill='#2d3a56'/>`,
+ gunbatimi:()=>lg('#6a11cb','#feb47b','#ff7e5f')+`<circle cx='200' cy='245' r='70' fill='#ffd36e'/><rect y='250' width='400' height='150' fill='#1f3b63'/><rect x='150' y='262' width='100' height='4' fill='#ffd36e' opacity='.7'/><rect x='170' y='280' width='60' height='4' fill='#ffd36e' opacity='.5'/><rect x='185' y='298' width='30' height='4' fill='#ffd36e' opacity='.4'/><path d='M60 330h90l-14 18H74z' fill='#111'/><path d='M105 290v40l32-7z' fill='#fff'/>`,
+ sehir:()=>lg('#0f0c29','#302b63')+stars(50)+`<circle cx='320' cy='70' r='24' fill='#fdf6c3'/>`+[[10,50,170],[65,40,120],[110,60,210],[175,45,150],[225,55,190],[285,40,130],[330,60,160]].map(([x,w,h])=>`<rect x='${x}' y='${400-h}' width='${w}' height='${h}' fill='#16213e'/>`+Array.from({length:Math.floor(h/22)*2},(_,i)=>`<rect x='${x+8+(i%2)*(w-22)}' y='${400-h+10+Math.floor(i/2)*22}' width='8' height='10' fill='${(i*7)%5?'#ffd166':'#334'}'/>`).join('')).join(''),
+ sahil:()=>lg('#89f7fe','#66a6ff')+`<circle cx='320' cy='80' r='36' fill='#fff3b0'/><rect y='240' width='400' height='160' fill='#1e90d6'/><path d='M0 400V320Q200 270 400 330V400Z' fill='#f6d79f'/><path d='M120 330Q130 250 150 190' stroke='#6b4423' stroke-width='9' fill='none'/><path d='M150 190Q110 160 70 190Q110 175 150 190ZM150 190Q190 150 235 175Q190 170 150 190ZM150 190Q140 140 160 120Q165 160 150 190Z' fill='#2e9e4f' stroke='#2e9e4f' stroke-width='6'/>`,
+ orman:()=>lg('#134e5e','#71b280')+`<circle cx='300' cy='90' r='40' fill='#e8f5c8' opacity='.8'/>`+[[0,200],[70,260],[140,190],[210,280],[280,220],[340,250]].map(([x,h])=>`<path d='M${x} 400L${x+35} ${400-h}L${x+70} 400Z' fill='#0b3d2e'/><path d='M${x+10} 400L${x+35} ${400-h*.7}L${x+60} 400Z' fill='#145a3f'/>`).join(''),
+ uzay:()=>`<defs><radialGradient id='a'><stop offset='0' stop-color='#3a1c71'/><stop offset='1' stop-color='#000'/></radialGradient></defs><rect width='400' height='400' fill='url(#a)'/>`+stars(90)+`<circle cx='250' cy='200' r='70' fill='#f5a45d'/><path d='M200 170Q250 150 300 175' stroke='#d9843f' stroke-width='8' fill='none'/><ellipse cx='250' cy='205' rx='125' ry='22' fill='none' stroke='#ffe0b0' stroke-width='6' transform='rotate(-20 250 205)'/><circle cx='90' cy='310' r='22' fill='#bdc3c7'/>`,
+ cicek:()=>`<rect width='400' height='400' fill='#ffe3ec'/>`+[[100,120,'#ff6b9d'],[290,100,'#ffb347'],[200,250,'#c56cf0'],[80,300,'#ff6b6b'],[320,290,'#4cd137']].map(([x,y,c])=>[0,60,120,180,240,300].map(a=>`<circle cx='${x+Math.cos(a*Math.PI/180)*22}' cy='${y+Math.sin(a*Math.PI/180)*22}' r='18' fill='${c}'/>`).join('')+`<circle cx='${x}' cy='${y}' r='14' fill='#ffe66d'/>`).join(''),
+ balon:()=>lg('#ff9a9e','#fecfef')+`<path d='M0 400V330L70 290L130 340L210 280L290 345L350 300L400 340V400Z' fill='#b5651d'/>`+[[100,120,'#e74c3c'],[250,90,'#f1c40f'],[300,220,'#3498db'],[170,240,'#9b59b6']].map(([x,y,c])=>`<ellipse cx='${x}' cy='${y}' rx='34' ry='40' fill='${c}'/><path d='M${x-34} ${y}L${x-10} ${y+55}M${x+34} ${y}L${x+10} ${y+55}' stroke='#333' stroke-width='1.5'/><rect x='${x-10}' y='${y+55}' width='20' height='13' fill='#6b4423'/><path d='M${x-14} ${y-36}Q${x} ${y-10} ${x+14} ${y-36}' stroke='#fff' stroke-opacity='.5' stroke-width='3' fill='none'/>`).join(''),
+ kahve:()=>`<rect width='400' height='400' fill='#d7b899'/><rect x='300' y='185' width='55' height='30' rx='15' fill='#fff'/><circle cx='200' cy='200' r='150' fill='#f8f4ef'/><circle cx='200' cy='200' r='110' fill='#fff'/><circle cx='200' cy='200' r='90' fill='#6f4e37'/><circle cx='200' cy='200' r='72' fill='#c8a27a'/><path d='M200 238C150 200 165 165 200 185C235 165 250 200 200 238Z' fill='#fff'/>`,
+ bogaz:()=>lg('#355c7d','#f8b195','#c06c84')+`<circle cx='200' cy='215' r='40' fill='#ffd9a0'/><rect y='260' width='400' height='140' fill='#1d3557'/><rect x='170' y='272' width='60' height='4' fill='#ffd9a0' opacity='.6'/><rect x='96' y='120' width='8' height='140' fill='#111'/><rect x='296' y='120' width='8' height='140' fill='#111'/><path d='M0 250H400' stroke='#111' stroke-width='8'/><path d='M0 246Q50 246 100 124Q200 236 300 124Q350 246 400 246' stroke='#111' stroke-width='3' fill='none'/>`,
+ aurora:()=>lg('#020024','#0b486b')+stars(60)+`<path d='M0 150Q100 60 200 140T400 100V200Q300 250 200 190T0 230Z' fill='#00ff9d' opacity='.5'/><path d='M0 190Q120 110 220 180T400 150V230Q300 280 190 230T0 270Z' fill='#9d4edd' opacity='.45'/><path d='M0 400V320L80 270L150 330L230 260L320 330L400 290V400Z' fill='#05080f'/>`
+};
+const SCC={};
+const SC=k=>SCC[k]||(SCC[k]='data:image/svg+xml,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>${SCN[k]()}</svg>`));
+const im=p=>p.img||(p.s&&SCN[p.s]?SC(p.s):'');
+function NP(){const n=Date.now(),R=[['ayse','dag','Zirvede nefes almak başka. 🏔️',3,['can','zeynep'],'Muhteşem manzara!'],['mehmet','sehir','Gece şehri hiç uyumuyor. 🌃',12,['ayse'],'Işıklar harika'],['zeynep','cicek','Bahçede bahar geldi 🌸',25,['ayse','mehmet','can'],'Çok renkli!'],['can','uzay','Teleskopla bakınca 🪐',45,['zeynep'],'Satürn mü bu?'],['ayse','sahil','Tatil modu: açık. 🌴',70,['mehmet','can'],'Yer ayır bana!'],['mehmet','bogaz','Köprüde gün batımı 🌉',110,['ayse','zeynep'],'İstanbul ❤️'],['zeynep','kahve','Latte art denemesi ☕',160,['can'],'Kalp çok güzel olmuş'],['can','orman','Ormanda yürüyüş 🌲',240,['ayse'],'Temiz hava!'],['ayse','balon','Kapadokya\'da balonlar 🎈',330,['mehmet','zeynep','can'],'Rüya gibi'],['mehmet','gunbatimi','Deniz ve gün batımı 🌅',480,['can'],'Bayıldım'],['ayse','aurora','Kuzey ışıkları 🌌',620,['mehmet','zeynep'],'Hayalim bu!']];
+return R.map((r,i)=>({id:'n'+i,user:r[0],s:r[1],img:null,e:'',g:G[i%G.length],cap:r[2],likes:r[4],comments:[{u:r[4][0],t:r[5]}],time:n-r[3]*60000}))}
+const gOf=u=>G[parseInt(hash(u),36)%G.length];
+function seed(){
+  const p=hash('1234'),now=Date.now(),U={};
+  [['ayse','Ayşe Yılmaz','Gezgin ✈️ Kahve bağımlısı'],['mehmet','Mehmet Demir','Fotoğraf 📸 İstanbul'],['zeynep','Zeynep Kaya','Yemek yapmayı severim 🍝'],['can','Can Özkan','Gitar 🎸 & kodlama']]
+   .forEach(([u,n,b])=>U[u]={name:n,bio:b,pass:p,avatar:null,following:[],saved:[]});
+  const P=[['ayse','🏔️','Dağ yolu, temiz hava.',5],['mehmet','🌉','Boğaz akşamları başka güzel.',30],['zeynep','🍝','Bugünkü menü: ev yapımı makarna!',90],['can','🎸','Yeni şarkı üzerinde çalışıyorum.',200],['ayse','☕','Güne başlarken.',400],['mehmet','🌅','Gün batımı.',700],['zeynep','🍰','Tatlı molası!',900],['can','🚀','Yeni proje yayında.',1500]];
+  return{users:U,me:null,theme:'light',posts:P.map((x,i)=>({id:'p'+i,user:x[0],img:null,e:x[1],g:G[i%G.length],cap:x[2],likes:i%2?['ayse']:['can','zeynep'],comments:i%3?[]:[{u:'mehmet',t:'Harika! 🔥'}],time:now-x[3]*60000})).concat(NP()),v2:1};
+}
+function load(){try{const d=JSON.parse(localStorage.instegram);if(d&&d.users){if(!d.v2){d.posts.push(...NP());d.v2=1}return d}}catch(e){}return seed()}
+function save(){try{localStorage.instegram=JSON.stringify(DB)}catch(e){toast('Depolama dolu, eski gönderileri sil.')}}
+let DB=load(),view='feed',pv=null,q='',ovPost=null,authMode='login',defer=null;
+save();
+document.documentElement.dataset.theme=DB.theme;
+const me=()=>DB.users[DB.me];
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('on'),2200)}
+function ago(t){const m=Math.floor((Date.now()-t)/60000);if(m<1)return 'şimdi';if(m<60)return m+' dk';const h=Math.floor(m/60);if(h<24)return h+' sa';const d=Math.floor(h/24);return d<7?d+' gün':Math.floor(d/7)+' hf'}
+function av(u,s=32){const x=DB.users[u];if(!x)return '';const st=`width:${s}px;height:${s}px;font-size:${s*.42}px`;
+  return x.avatar?`<img class="av" style="${st}" src="${x.avatar}" alt="">`:`<div class="av" style="${st};background:${gOf(u)}">${esc(u[0].toUpperCase())}</div>`}
+function readImg(f,max,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.8))};i.src=r.result};r.readAsDataURL(f)}
+
+/* ---------- Giriş / Kayıt ---------- */
+function renderAuth(err=''){
+  const L=authMode==='login';
+  $('#root').innerHTML=`<div id="auth"><div class="box"><div class="logo grad">Instegram</div>
+  ${L?'':'<div class="sub" style="margin-bottom:6px">Arkadaşlarının fotoğraflarını görmek için kaydol.</div>'}
+  <input id="au" placeholder="Kullanıcı adı" autocapitalize="none" autocomplete="username">
+  ${L?'':'<input id="an" placeholder="Ad Soyad">'}
+  <input id="ap" type="password" placeholder="Şifre" autocomplete="${L?'current-password':'new-password'}">
+  ${L?'':'<input id="ap2" type="password" placeholder="Şifre tekrar">'}
+  <button class="btn" onclick="${L?'login()':'register()'}">${L?'Giriş yap':'Kaydol'}</button>
+  <div class="err">${esc(err)}</div>
+  ${L?'<div class="sub" style="font-weight:400;font-size:12px">Demo hesap: ayse / 1234</div>':''}</div>
+  <div class="box" style="padding:18px;text-align:center">${L?'Hesabın yok mu? <button class="lnk" onclick="authMode=\'reg\';renderAuth()">Kaydol</button>':'Hesabın var mı? <button class="lnk" onclick="authMode=\'login\';renderAuth()">Giriş yap</button>'}</div>
+  ${defer?'<button class="btn" style="max-width:350px" onclick="installApp()">📲 Uygulamayı telefona yükle</button>':''}</div>`;
+  ['au','ap','ap2'].forEach(i=>{const e=$('#'+i);e&&e.addEventListener('keydown',k=>{if(k.key==='Enter')L?login():register()})});
+}
+function login(){const u=$('#au').value.trim().toLowerCase(),p=$('#ap').value;
+  if(!DB.users[u]||DB.users[u].pass!==hash(p))return renderAuth('Kullanıcı adı veya şifre hatalı.');
+  DB.me=u;save();view='feed';render()}
+function register(){const u=$('#au').value.trim().toLowerCase(),n=$('#an').value.trim(),p=$('#ap').value;
+  if(!/^[a-z0-9._]{3,20}$/.test(u))return renderAuth('Kullanıcı adı 3-20 karakter olmalı (harf, rakam, . _).');
+  if(DB.users[u])return renderAuth('Bu kullanıcı adı alınmış.');
+  if(!n)return renderAuth('Ad Soyad gir.');
+  if(p.length<4)return renderAuth('Şifre en az 4 karakter olmalı.');
+  if(p!==$('#ap2').value)return renderAuth('Şifreler eşleşmiyor.');
+  DB.users[u]={name:n,bio:'',pass:hash(p),avatar:null,following:['ayse','mehmet'],saved:[]};
+  DB.me=u;save();view='feed';render();toast('Instegram\'a hoş geldin! 🎉')}
+function logout(){DB.me=null;save();authMode='login';closeOv();renderAuth()}
+
+/* ---------- Ana iskelet ---------- */
+function render(){
+  if(!DB.me)return renderAuth();
+  if(!$('#app')){
+    $('#root').innerHTML=`<div id="app"><header><div class="logo grad" onclick="go('feed')">Instegram</div><div class="ic">
+    ${defer?'<button class="lnk" onclick="installApp()">Yükle</button>':''}
+    <button class="ib" onclick="toggleTheme()" aria-label="Tema">🌓</button></div></header><main id="main"></main>
+    <nav>${[['feed','🏠'],['explore','🔍'],['add','➕'],['saved','🔖'],['me','👤']].map(([k,i])=>`<button id="n-${k}" onclick="${k==='add'?'openUpload()':k==='me'?`go('profile','${DB.me}')`:`go('${k}')`}" aria-label="${k}">${i}</button>`).join('')}</nav></div>`;
+  }
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
+  const k=view==='profile'&&pv===DB.me?'me':view;const nb=$('#n-'+k);nb&&nb.classList.add('on');
+  const m=$('#main');
+  m.innerHTML=view==='feed'?feedV():view==='explore'?exploreV():view==='saved'?savedV():profileV();
+  if(ovPost)openPost(ovPost);
+}
+function go(v,u){view=v;pv=u||null;q='';ovPost=null;closeOv();render();scrollTo(0,0)}
+function toggleTheme(){DB.theme=DB.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=DB.theme;save()}
+
+/* ---------- Akış ---------- */
+function feedV(){
+  const f=[DB.me,...me().following];
+  const posts=DB.posts.filter(p=>f.includes(p.user)).sort((a,b)=>b.time-a.time);
+  return `<div class="stories">${f.filter(u=>DB.users[u]).map(u=>`<button class="st" onclick="story('${u}')"><div class="ring">${av(u,56)}</div><span>${u===DB.me?'Hikayen':esc(u)}</span></button>`).join('')}</div>`+
+  (posts.length?posts.map(p=>postC(p)).join(''):`<div class="empty">Henüz gönderi yok.<br>Keşfet'ten birilerini takip et ya da ilk gönderini paylaş.</div>`);
+}
+function postC(p){
+  const lk=p.likes.includes(DB.me),sv=me().saved.includes(p.id);
+  const cm=p.comments;
+  return `<article class="post" id="${p.id}"><div class="ph"><button onclick="go('profile','${p.user}')" style="display:flex;gap:10px;align-items:center;font-weight:600">${av(p.user)}${esc(p.user)}</button>${p.user===DB.me?`<button class="x" onclick="delP('${p.id}')" aria-label="Sil">🗑️</button>`:''}</div>
+  <div class="med" ondblclick="like('${p.id}',1)" style="${im(p)?'':'background:'+p.g}">${im(p)?`<img class="med" src="${im(p)}" alt="">`:p.e}<span class="heart" id="h${p.id}">❤</span></div>
+  <div class="act"><button class="${lk?'liked':''}" onclick="like('${p.id}')">${lk?'❤️':'🤍'}</button><button onclick="$('#c${p.id}').focus()">💬</button><button class="r" onclick="saveP('${p.id}')">${sv?'🔖':'🏷️'}</button></div>
+  <div class="pad"><b>${p.likes.length} beğeni</b></div>
+  ${p.cap?`<div class="pad"><b>${esc(p.user)}</b> ${esc(p.cap)}</div>`:''}
+  ${cm.slice(-2).map(c=>`<div class="pad"><b>${esc(c.u)}</b> ${esc(c.t)}</div>`).join('')}
+  ${cm.length>2?`<div class="pad mu">${cm.length} yorumun tümü: ${cm.slice(0,-2).map(c=>esc(c.u)+': '+esc(c.t)).join(' • ')}</div>`:''}
+  <div class="pad mu" style="font-size:12px">${ago(p.time)}</div>
+  <div class="ci"><input id="c${p.id}" placeholder="Yorum ekle…" onkeydown="if(event.key==='Enter')comment('${p.id}')"><button onclick="comment('${p.id}')">Paylaş</button></div></article>`;
+}
+function like(id,dbl){const p=DB.posts.find(x=>x.id===id),i=p.likes.indexOf(DB.me);
+  if(i<0)p.likes.push(DB.me);else if(!dbl)p.likes.splice(i,1);
+  save();render();const h=$('#h'+id);if(h&&dbl){h.classList.add('pop')}}
+function saveP(id){const s=me().saved,i=s.indexOf(id);i<0?(s.push(id),toast('Kaydedildi')):s.splice(i,1);save();render()}
+function comment(id){const e=$('#c'+id),t=e.value.trim();if(!t)return;DB.posts.find(x=>x.id===id).comments.push({u:DB.me,t});save();render()}
+function delP(id){if(!confirm('Bu gönderi silinsin mi?'))return;DB.posts=DB.posts.filter(x=>x.id!==id);Object.values(DB.users).forEach(u=>u.saved=u.saved.filter(s=>s!==id));ovPost=null;closeOv();save();render();toast('Gönderi silindi')}
+
+/* ---------- Keşfet / Kaydedilenler ---------- */
+function grid(ps){return ps.length?`<div class="grid">${ps.map(p=>`<div class="g" onclick="openPost('${p.id}')" style="${im(p)?'':'background:'+p.g}">${im(p)?`<img src="${im(p)}" alt="">`:p.e}</div>`).join('')}</div>`:''}
+function exploreV(){
+  const ql=q.toLowerCase(),us=Object.keys(DB.users).filter(u=>u!==DB.me&&(u.includes(ql)||DB.users[u].name.toLowerCase().includes(ql)));
+  return `<div class="srch"><input id="q" placeholder="Kullanıcı ara" value="${esc(q)}" oninput="q=this.value;const p=this.selectionStart;render();const e=$('#q');e.focus();e.setSelectionRange(p,p)"></div>`+
+  (q?(us.length?us.map(u=>usrRow(u)).join(''):'<div class="empty">Kullanıcı bulunamadı.</div>'):`<div style="padding:0 0 6px">${us.slice(0,4).map(u=>usrRow(u)).join('')}</div>`+grid([...DB.posts].sort((a,b)=>b.time-a.time)));
+}
+function usrRow(u){const f=me().following.includes(u);return `<div class="usr" onclick="go('profile','${u}')">${av(u,44)}<div><b>${esc(u)}</b><div class="mu" style="font-size:13px">${esc(DB.users[u].name)}</div></div><button class="btn f ${f?'sec':''}" onclick="event.stopPropagation();follow('${u}')">${f?'Takiptesin':'Takip et'}</button></div>`}
+function savedV(){const ps=DB.posts.filter(p=>me().saved.includes(p.id));return `<div class="sh" style="position:static">Kaydedilenler</div>`+(ps.length?grid(ps):'<div class="empty">Kaydettiğin gönderiler burada görünür.<br>Bir gönderideki 🏷️ simgesine dokun.</div>')}
+function follow(u){const f=me().following,i=f.indexOf(u);i<0?f.push(u):f.splice(i,1);save();render()}
+
+/* ---------- Profil ---------- */
+function profileV(){
+  const u=pv,x=DB.users[u];if(!x)return '<div class="empty">Kullanıcı bulunamadı.</div>';
+  const ps=DB.posts.filter(p=>p.user===u).sort((a,b)=>b.time-a.time),fl=Object.values(DB.users).filter(o=>o.following.includes(u)).length,own=u===DB.me,f=me().following.includes(u);
+  return `<div class="pr"><div class="top">${av(u,80)}<div class="stat"><div><b>${ps.length}</b><span>gönderi</span></div><div><b>${fl}</b><span>takipçi</span></div><div><b>${x.following.length}</b><span>takip</span></div></div></div>
+  <div style="margin-top:10px"><b>${esc(x.name)}</b><div class="mu" style="font-size:13px">@${esc(u)}</div><div>${esc(x.bio)}</div></div>
+  <div style="display:flex;gap:8px;margin-top:12px">${own?`<button class="btn sec" onclick="openEdit()">Profili düzenle</button><button class="btn sec" onclick="logout()">Çıkış yap</button>`:`<button class="btn ${f?'sec':''}" onclick="follow('${u}')">${f?'Takiptesin':'Takip et'}</button>`}</div>
+  <div class="tabs"><div>▦</div></div></div>`+(ps.length?grid(ps):'<div class="empty">Henüz gönderi yok.</div>');
+}
+
+/* ---------- Pencereler ---------- */
+function ov(h,full){closeOv();const d=document.createElement('div');d.className='ov';d.id='ov';d.innerHTML=`<div class="sheet ${full?'f':''}">${h}</div>`;d.addEventListener('click',e=>{if(e.target===d){ovPost=null;closeOv()}});document.body.appendChild(d)}
+function closeOv(){const o=$('#ov');o&&o.remove()}
+function openPost(id){const p=DB.posts.find(x=>x.id===id);if(!p)return;ovPost=id;ov(`<div class="sh"><span>Gönderi</span><button onclick="ovPost=null;closeOv()">✕</button></div>`+postC(p))}
+function openUpload(){ovPost=null;window._img=null;ov(`<div class="sh"><button onclick="closeOv()">✕</button><span>Yeni gönderi</span><button class="lnk" onclick="share()">Paylaş</button></div>
+  <div class="form"><input type="file" id="fi" accept="image/*" onchange="pick(this)"><img id="pr" class="prev" alt="" style="display:none"><textarea id="cap" rows="3" placeholder="Bir açıklama yaz…"></textarea></div>`)}
+function pick(i){const f=i.files[0];if(!f)return;readImg(f,900,d=>{window._img=d;const p=$('#pr');p.src=d;p.style.display='block'})}
+function share(){if(!window._img)return toast('Önce bir fotoğraf seç.');
+  DB.posts.push({id:'p'+Date.now(),user:DB.me,img:window._img,e:'',g:'',cap:$('#cap').value.trim(),likes:[],comments:[],time:Date.now()});
+  save();closeOv();go('feed');toast('Gönderi paylaşıldı ✅')}
+function openEdit(){const x=me();window._av=x.avatar;ov(`<div class="sh"><button onclick="closeOv()">✕</button><span>Profili düzenle</span><button class="lnk" onclick="saveEdit()">Bitti</button></div>
+  <div class="form"><div style="text-align:center" id="eav">${av(DB.me,80)}</div><input type="file" accept="image/*" onchange="readImg(this.files[0],300,d=>{window._av=d;$('#eav').innerHTML='<img class=av style=width:80px;height:80px src='+d+'>'})">
+  <input id="en" value="${esc(x.name)}" placeholder="Ad Soyad"><textarea id="eb" rows="3" maxlength="150" placeholder="Biyografi">${esc(x.bio)}</textarea>
+  <input id="np" type="password" placeholder="Yeni şifre (boş bırak = değişmez)"></div>`)}
+function saveEdit(){const x=me(),n=$('#en').value.trim();if(!n)return toast('Ad boş olamaz.');
+  x.name=n;x.bio=$('#eb').value.trim();x.avatar=window._av;const p=$('#np').value;if(p){if(p.length<4)return toast('Şifre en az 4 karakter.');x.pass=hash(p)}
+  save();closeOv();render();toast('Profil güncellendi')}
+let stT;function story(u){clearTimeout(stT);const x=DB.users[u],last=DB.posts.filter(p=>p.user===u).sort((a,b)=>b.time-a.time)[0];
+  const d=document.createElement('div');d.className='sv';d.style.background=last&&im(last)?'#000':last?last.g:gOf(u);
+  d.innerHTML=`<div class="bar"><i></i></div><div class="nm">${av(u,32)}${esc(u)}</div>${last&&im(last)?`<img src="${im(last)}" style="max-width:100%;max-height:80%;border-radius:8px" alt="">`:last?last.e:'👋'}<p>${esc(last?last.cap:x.name)}</p>`;
+  const c=()=>{clearTimeout(stT);d.remove()};d.onclick=c;document.body.appendChild(d);stT=setTimeout(c,4000)}
+
+/* ---------- Telefona yükleme (PWA) ---------- */
+function icon(n){const c=document.createElement('canvas');c.width=c.height=n;const x=c.getContext('2d'),g=x.createLinearGradient(0,n,n,0);
+  g.addColorStop(0,'#f9ce34');g.addColorStop(.5,'#ee2a7b');g.addColorStop(1,'#6228d7');x.fillStyle=g;x.fillRect(0,0,n,n);x.strokeStyle='#fff';x.lineWidth=n/16;
+  x.beginPath();x.roundRect(n*.22,n*.22,n*.56,n*.56,n*.16);x.stroke();x.beginPath();x.arc(n/2,n/2,n*.13,0,7);x.stroke();x.beginPath();x.arc(n*.67,n*.33,n*.015,0,7);x.stroke();return c.toDataURL('image/png')}
+try{
+  const i192=icon(192),i512=icon(512);
+  const a=document.createElement('link');a.rel='apple-touch-icon';a.href=i192;document.head.appendChild(a);
+  const f=document.createElement('link');f.rel='icon';f.href=i192;document.head.appendChild(f);
+  const mf={name:'Instegram',short_name:'Instegram',start_url:location.href.split('#')[0],scope:location.href.replace(/[^/]*$/,''),display:'standalone',orientation:'portrait',background_color:'#ffffff',theme_color:'#ffffff',icons:[{src:i192,sizes:'192x192',type:'image/png'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+  const m=document.createElement('link');m.rel='manifest';m.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));document.head.appendChild(m);
+}catch(e){}
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();defer=e;DB.me?(document.querySelector('header .ic')&&!$('#ib-i')&&(()=>{const b=document.createElement('button');b.id='ib-i';b.className='lnk';b.textContent='Yükle';b.onclick=installApp;$('header .ic').prepend(b)})()):renderAuth()});
+function installApp(){if(!defer)return toast('Tarayıcı menüsünden "Ana ekrana ekle" seç.');defer.prompt();defer.userChoice.then(()=>{defer=null;const b=$('#ib-i');b&&b.remove()})}
+addEventListener('storage',e=>{if(e.key==='instegram'){DB=load();render()}});
+render();
+</script>
+</body>
+</html>
